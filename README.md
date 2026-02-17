@@ -43,3 +43,6 @@ pm2 startup
 - WhatsApp Web requires scanning a QR code the first time.
 - Auth session is stored in `.wwebjs_auth` and cached in `.wwebjs_cache`.
 - Conversation memory is in-memory only. For persistence, add Redis/SQLite.
+
+
+<!-- suvani suvani <3 -->
