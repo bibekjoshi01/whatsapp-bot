@@ -3,18 +3,17 @@ import threading
 from fastapi import APIRouter, HTTPException
 
 from automation_api.core.config import get_settings
-from automation_api.schemas.meroshare import (
-    LoginTriggerResponse,
-)
 from automation_api.services.browser_manager import BrowserManager
 from automation_api.services.meroshare.auth import MeroShareAuth
+from automation_api.services.meroshare.navigator import MyASBAPages
+from automation_api.services.meroshare.utils import get_new_apply_for_issues
 
 settings = get_settings()
 router = APIRouter(prefix="", tags=["meroshare"])
 login_lock = threading.Lock()
 
 
-@router.post("/new-issues", response_model=LoginTriggerResponse)
+@router.post("/new-issues")
 def get_new_issues():
     acquired = login_lock.acquire(blocking=False)
 
@@ -33,17 +32,14 @@ def get_new_issues():
         auth = MeroShareAuth(page=page)
         auth.login()
 
-        return LoginTriggerResponse(
-            success=True,
-            message="Meroshare login completed.",
-            current_url=page.url,
-        )
+        s_page = MyASBAPages(page)
+        s_page.switch_tab("asba")
+
+        return get_new_apply_for_issues(page)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     except Exception as exc:
-        raise HTTPException(
-            status_code=500, detail=f"Login trigger failed: {exc}"
-        ) from exc
+        raise HTTPException(status_code=500, detail=f"{exc}") from exc
     finally:
         try:
             if manager:
