@@ -16,7 +16,7 @@ export type Config = {
 
 export function readBool(
   value: string | undefined,
-  defaultValue: boolean
+  defaultValue: boolean,
 ): boolean {
   if (value === undefined) return defaultValue;
   return value !== "false";

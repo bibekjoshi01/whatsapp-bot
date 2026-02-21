@@ -1,4 +1,8 @@
 node_modules
+venv/
+.venv/
+env/
+.env
 .env
 .DS_Store
 npm-debug.log*
@@ -9,6 +13,8 @@ logs
 *.log
 dist
 *.tsbuildinfo
+__pycache__/
+*.pyc
 
 # whatsapp-web.js auth/session data
 .wwebjs_auth
