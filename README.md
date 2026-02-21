@@ -69,21 +69,13 @@ cp .env.example .env
 2. Run the service:
 
 ```bash
-python run.py
+python manage.py
 ```
 
 Health check:
 
 ```bash
 curl http://localhost:8000/health
-```
-
-Trigger example (Meroshare login):
-
-```bash
-curl -X POST http://localhost:8000/trigger/login \
-  -H "Content-Type: application/json" \
-  -d '{"save_session": true, "state_path": "state.json"}'
 ```
 
 ## Environment
