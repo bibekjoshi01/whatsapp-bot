@@ -1,5 +1,6 @@
 import type { Message } from "whatsapp-web.js";
 import { isBotEnabled, setBotEnabled } from "./state";
+import { getNewIssues } from "./utils";
 
 export async function handleOwnerCommand(message: Message): Promise<boolean> {
   const text = message.body;
@@ -17,6 +18,9 @@ export async function handleOwnerCommand(message: Message): Promise<boolean> {
   if (text == "!bot status") {
     await message.reply(`Bot is currently ${isBotEnabled() ? "ON" : "OFF"}.`);
     return true;
+  }
+  if (text == "!new-issues") {
+    getNewIssues(message);
   }
   return false;
 }

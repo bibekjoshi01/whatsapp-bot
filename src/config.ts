@@ -5,6 +5,7 @@ export type Config = {
   businessAddress: string;
   businessWebsite: string;
   businessPhone: string;
+  automationApiBaseUrl: string;
   ignoreGroups: boolean;
   botEnabled: boolean;
   aiEnabled: boolean;
@@ -29,6 +30,8 @@ export const config: Config = {
   businessAddress: process.env.BUSINESS_ADDRESS || "",
   businessWebsite: process.env.BUSINESS_WEBSITE || "",
   businessPhone: process.env.BUSINESS_PHONE || "",
+  automationApiBaseUrl:
+    process.env.AUTOMATION_API_BASE_URL || "http://localhost:8000/api",
   ignoreGroups: readBool(process.env.IGNORE_GROUPS, true),
   botEnabled: true,
   aiEnabled: readBool(process.env.AI_ENABLED, false),
