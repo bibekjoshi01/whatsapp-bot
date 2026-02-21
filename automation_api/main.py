@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 # Project Imports
 from automation_api.api.router import api_router
-from automation_api.config import get_settings
+from automation_api.core.config import get_settings
 
 settings = get_settings()
 
