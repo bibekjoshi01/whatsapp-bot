@@ -1,53 +1,62 @@
 # WhatsApp Bot + Automation API
 
-This repo now has two separated apps:
-- Node.js WhatsApp bot (chat interaction)
-- FastAPI automation service (browser/API triggers)
+A small monorepo containing two complementary apps:
 
-## Folder structure
-```text
+- A Node.js WhatsApp bot (TypeScript) for handling chat interactions and automations.
+- A FastAPI-based automation service that runs browser-driven tasks (Meroshare integration, session management, etc.).
+
+## Key Features
+
+- Conversational WhatsApp bot with configurable intents and memory.
+- Automation API to programmatically drive browser tasks and persist sessions.
+- Clear separation of runtimes so services can be deployed independently.
+
+## Repository layout
+
+```
 .
-├── src/                       # Node bot source (TypeScript)
-├── automation_api/
-│   ├── app/
-│   │   ├── api/routes/        # FastAPI routes
-│   │   ├── core/              # env/config helpers
-│   │   ├── schemas/           # request/response models
-│   │   └── services/          # automation services (Meroshare, etc.)
-│   ├── .env.example
-│   ├── requirements.txt
-│   └── run.py
-├── package.json               # Node bot package
+├── src/                  # Node bot source (TypeScript)
+├── automation_api/       # FastAPI automation service
+├── package.json
 ├── tsconfig.json
-└── .env.example               # Node bot env template
+├── requirements.txt
+└── .env.example
 ```
 
-## Node bot (separate runtime)
-### Setup
+## Quick Start
+
+You can run the Node bot and the FastAPI automation service independently. Below are minimal steps to get both running locally.
+
+### Node bot (Quick)
+
+1. Install dependencies:
+
 ```bash
 npm install
-cp .env.example .env
 ```
 
-### Run
+2. Create environment file and start:
+
 ```bash
+cp .env.example .env
 npm start
 ```
 
-### PM2
+Optional (PM2 deployment):
+
 ```bash
-npm install -g pm2
 npm run build
+npm install -g pm2
 pm2 start ecosystem.config.json
 pm2 logs whatsapp-bot
 pm2 save
 pm2 startup
 ```
 
-## FastAPI automation (separate runtime)
-`FastAPI` is preferable over Flask here because your use case is API triggers and FastAPI provides typed validation and cleaner API contracts by default.
+### FastAPI automation (Quick)
 
-### Setup
+1. Create & activate a virtualenv, install deps:
+
 ```bash
 cd automation_api
 python -m venv .venv
@@ -57,20 +66,40 @@ python -m playwright install chromium
 cp .env.example .env
 ```
 
-### Run
+2. Run the service:
+
 ```bash
-cd automation_api
 python run.py
 ```
 
-### Trigger Meroshare login
+Health check:
+
+```bash
+curl http://localhost:8000/health
+```
+
+Trigger example (Meroshare login):
+
 ```bash
 curl -X POST http://localhost:8000/trigger/login \
   -H "Content-Type: application/json" \
   -d '{"save_session": true, "state_path": "state.json"}'
 ```
 
-### Health check
-```bash
-curl http://localhost:8000/health
-```
+## Environment
+
+- Copy the appropriate `.env.example` to `.env` in each service before running.
+
+## Development notes
+
+- Node sources live in `src/` and are written in TypeScript. Use `npm run build` to compile.
+- The automation API lives in `automation_api/` and exposes typed endpoints under `api/routes/`.
+
+## Contributing
+
+Contributions are welcome. Open an issue or submit a PR with a clear description of your change.
+
+## License
+
+This project does not include a license file. Add one if you plan to publish or share the code widely.
+
